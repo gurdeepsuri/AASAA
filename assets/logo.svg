@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="AASAA — Architecture and Interior Design Studio">
+  <defs>
+    <!-- sketchy hatch texture for the blue roof -->
+    <pattern id="hatchBlue" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(84)">
+      <rect width="14" height="14" fill="#a3bcbe"/>
+      <line x1="0" y1="2" x2="9" y2="2" stroke="#eee6d8" stroke-width="1.4"/>
+      <line x1="4" y1="7" x2="14" y2="7" stroke="#eee6d8" stroke-width="1.1"/>
+      <line x1="0" y1="11.5" x2="7" y2="11.5" stroke="#eee6d8" stroke-width="1.5"/>
+    </pattern>
+    <!-- herringbone texture for the yellow roof -->
+    <pattern id="herringYellow" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#f3a72f"/>
+      <path d="M0 4 L8 0 M0 12 L8 8 M0 20 L8 16 M8 0 L16 4 M8 8 L16 12 M8 16 L16 20"
+            stroke="#efe6d6" stroke-width="1.1" fill="none"/>
+    </pattern>
+  </defs>
+
+  <!-- paper circle -->
+  <circle cx="320" cy="320" r="300" fill="#eae1d1"/>
+  <circle cx="200" cy="190" r="2.2" fill="#c9bda6"/>
+  <circle cx="452" cy="150" r="1.8" fill="#c9bda6"/>
+  <circle cx="500" cy="330" r="2.4" fill="#c9bda6"/>
+  <circle cx="150" cy="420" r="1.9" fill="#c9bda6"/>
+  <circle cx="360" cy="560" r="2.1" fill="#c9bda6"/>
+  <circle cx="255" cy="520" r="1.6" fill="#c9bda6"/>
+
+  <!-- blue roof -->
+  <polygon points="320,108 470,300 170,300" fill="url(#hatchBlue)"/>
+  <!-- construction lines: blue roof -->
+  <g stroke="#faf6ee" stroke-width="4" stroke-linecap="round">
+    <line x1="320" y1="96" x2="482" y2="304"/>
+    <line x1="320" y1="96" x2="158" y2="304"/>
+    <line x1="140" y1="300" x2="500" y2="300"/>
+    <line x1="320" y1="92" x2="320" y2="182"/>
+    <line x1="300" y1="98" x2="340" y2="128"/>
+  </g>
+
+  <!-- yellow roof (foreground) -->
+  <polygon points="320,168 512,398 128,398" fill="url(#herringYellow)"/>
+  <!-- maroon cap at the apex -->
+  <polygon points="320,148 356,192 284,192" fill="#7c1f17"/>
+  <!-- construction lines: yellow roof -->
+  <g stroke="#faf6ee" stroke-width="4" stroke-linecap="round">
+    <line x1="320" y1="160" x2="524" y2="404"/>
+    <line x1="320" y1="160" x2="116" y2="404"/>
+    <line x1="100" y1="398" x2="540" y2="398"/>
+    <line x1="106" y1="384" x2="132" y2="412"/>
+    <line x1="534" y1="384" x2="508" y2="412"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="320" y="486" text-anchor="middle" fill="#7c1f17"
+        font-family="'Julius Sans One','Tenor Sans',serif" font-size="104" letter-spacing="10">AASAA</text>
+  <text x="320" y="528" text-anchor="middle" fill="#8a2a20"
+        font-family="'Jost','Century Gothic',sans-serif" font-size="24" letter-spacing="4">Architecture and Interior Design Studio</text>
+</svg>

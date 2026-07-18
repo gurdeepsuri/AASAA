@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="AASAA mark">
+  <defs>
+    <pattern id="mHatchBlue" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(84)">
+      <rect width="14" height="14" fill="#a3bcbe"/>
+      <line x1="0" y1="2" x2="9" y2="2" stroke="#eee6d8" stroke-width="1.4"/>
+      <line x1="4" y1="7" x2="14" y2="7" stroke="#eee6d8" stroke-width="1.1"/>
+      <line x1="0" y1="11.5" x2="7" y2="11.5" stroke="#eee6d8" stroke-width="1.5"/>
+    </pattern>
+    <pattern id="mHerringYellow" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#f3a72f"/>
+      <path d="M0 4 L8 0 M0 12 L8 8 M0 20 L8 16 M8 0 L16 4 M8 8 L16 12 M8 16 L16 20"
+            stroke="#efe6d6" stroke-width="1.1" fill="none"/>
+    </pattern>
+  </defs>
+  <circle cx="320" cy="320" r="300" fill="#eae1d1"/>
+  <polygon points="320,128 500,358 140,358" fill="url(#mHatchBlue)"/>
+  <g stroke="#faf6ee" stroke-width="5" stroke-linecap="round">
+    <line x1="320" y1="112" x2="514" y2="362"/>
+    <line x1="320" y1="112" x2="126" y2="362"/>
+    <line x1="108" y1="358" x2="532" y2="358"/>
+  </g>
+  <polygon points="320,200 546,478 94,478" fill="url(#mHerringYellow)"/>
+  <polygon points="320,176 364,230 276,230" fill="#7c1f17"/>
+  <g stroke="#faf6ee" stroke-width="5" stroke-linecap="round">
+    <line x1="320" y1="190" x2="560" y2="484"/>
+    <line x1="320" y1="190" x2="80" y2="484"/>
+    <line x1="64" y1="478" x2="576" y2="478"/>
+  </g>
+</svg>
