@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>AASAA — Architecture &amp; Interior Design Studio in Bangalore</title>
   <meta name="description" content="AASAA is a Bangalore-based architecture and interior design studio. We design warm, story-rich homes, apartments and workspaces end to end — architecture, interiors, turnkey execution and renovation.">
   <meta name="keywords" content="architecture studio Bangalore, interior design studio Bangalore, interior designers Bangalore, architects in Bangalore, turnkey interiors, home renovation Bangalore, residential architecture, AASAA">
@@ -51,12 +53,13 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="assets/mark.svg">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/julius-sans-one.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="assets/images/saanjh/hero-living-arch.jpg" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ======= Header ======= -->
   <header class="site-header" id="top">
@@ -80,9 +83,10 @@
   </header>
 
   <!-- ======= Hero ======= -->
+  <main id="main">
   <section class="hero-photo">
     <img class="hero-img" src="assets/images/saanjh/hero-living-arch.jpg"
-         alt="Living room framed by a curved wooden arch, with a beige sofa and abstract art" fetchpriority="high">
+         alt="Living room framed by a curved wooden arch, with a beige sofa and abstract art" fetchpriority="high" width="2200" height="1467">
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-content reveal">
       <p class="eyebrow light">Architecture &amp; Interior Design · Bangalore</p>
@@ -120,7 +124,7 @@
       </div>
       <figure class="about-photo reveal">
         <img src="assets/images/saanjh/arch-to-bedroom.jpg" loading="lazy"
-             alt="Arched doorway opening into a bedroom with a terracotta wall">
+             alt="Arched doorway opening into a bedroom with a terracotta wall" width="1200" height="1744">
       </figure>
     </div>
   </section>
@@ -180,18 +184,18 @@
         </p>
       </div>
       <div class="masonry">
-        <figure class="reveal"><img src="assets/images/saanjh/living-room.jpg" loading="lazy" alt="Living room with arched doorway, exposed beams and linen sofa"><figcaption>The living room</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/study-reveal.jpg" loading="lazy" alt="Fluted wall panels folding open to reveal a mural-lined study nook"><figcaption>The hidden study</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/evening-media-wall.jpg" loading="lazy" alt="Media wall at dusk with fluted-oval console and burnt-orange niche"><figcaption>The evening room</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/chinoiserie-bar.jpg" loading="lazy" alt="Bar unit with dark chinoiserie folding doors above terracotta tiles"><figcaption>The chinoiserie bar</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/dining-room.jpg" loading="lazy" alt="Dining room with arch, gallery wall and linen-dressed table"><figcaption>The dining room</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/corridor-arches.jpg" loading="lazy" alt="Corridor of arches leading to a terracotta wall"><figcaption>The corridor of arches</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/jungle-mural.jpg" loading="lazy" alt="Jungle mural with giraffes above a sage green arched daybed"><figcaption>The jungle room</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/kids-daybed.jpg" loading="lazy" alt="Kids' daybed with moon cushion under the jungle mural"><figcaption>The little one's corner</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/kids-window-seat.jpg" loading="lazy" alt="Study with arched bookshelf, window seat and beaded timber cornice"><figcaption>The window seat</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/dining-niches.jpg" loading="lazy" alt="Arched terracotta niches holding brass artefacts beside the dining table"><figcaption>The niche wall</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/master-bedroom.jpg" loading="lazy" alt="Master bedroom with lime-plaster wall, dark wood headboard and block-printed linen"><figcaption>The master suite</figcaption></figure>
-        <figure class="reveal"><img src="assets/images/saanjh/powder-room.jpg" loading="lazy" alt="Powder room with hand-carved wooden basin on black stone"><figcaption>The powder room</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/living-room.jpg" loading="lazy" alt="Living room with arched doorway, exposed beams and linen sofa" width="1200" height="1708"><figcaption>The living room</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/study-reveal.jpg" loading="lazy" alt="Fluted wall panels folding open to reveal a mural-lined study nook" width="1600" height="1067"><figcaption>The hidden study</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/evening-media-wall.jpg" loading="lazy" alt="Media wall at dusk with fluted-oval console and burnt-orange niche" width="1200" height="1799"><figcaption>The evening room</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/chinoiserie-bar.jpg" loading="lazy" alt="Bar unit with dark chinoiserie folding doors above terracotta tiles" width="1200" height="1643"><figcaption>The chinoiserie bar</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/dining-room.jpg" loading="lazy" alt="Dining room with arch, gallery wall and linen-dressed table" width="1200" height="1800"><figcaption>The dining room</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/corridor-arches.jpg" loading="lazy" alt="Corridor of arches leading to a terracotta wall" width="1200" height="1720"><figcaption>The corridor of arches</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/jungle-mural.jpg" loading="lazy" alt="Jungle mural with giraffes above a sage green arched daybed" width="1600" height="1202"><figcaption>The jungle room</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/kids-daybed.jpg" loading="lazy" alt="Kids' daybed with moon cushion under the jungle mural" width="1200" height="1800"><figcaption>The little one's corner</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/kids-window-seat.jpg" loading="lazy" alt="Study with arched bookshelf, window seat and beaded timber cornice" width="1600" height="1166"><figcaption>The window seat</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/dining-niches.jpg" loading="lazy" alt="Arched terracotta niches holding brass artefacts beside the dining table" width="1200" height="1800"><figcaption>The niche wall</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/master-bedroom.jpg" loading="lazy" alt="Master bedroom with lime-plaster wall, dark wood headboard and block-printed linen" width="1200" height="1801"><figcaption>The master suite</figcaption></figure>
+        <figure class="reveal"><img src="assets/images/saanjh/powder-room.jpg" loading="lazy" alt="Powder room with hand-carved wooden basin on black stone" width="1200" height="1801"><figcaption>The powder room</figcaption></figure>
       </div>
       <p class="section-note reveal">More projects on the drawing board — follow along on
         <a href="https://www.instagram.com/aasaa_studio" target="_blank" rel="noopener">Instagram</a>.</p>
@@ -254,6 +258,8 @@
       </form>
     </div>
   </section>
+
+  </main>
 
   <!-- ======= Footer ======= -->
   <footer class="site-footer">

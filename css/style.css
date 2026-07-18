@@ -1,3 +1,20 @@
+/* ================= Self-hosted fonts (no third-party requests) ================= */
+@font-face {
+  font-family: 'Julius Sans One';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../assets/fonts/julius-sans-one.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal; font-weight: 300 500; font-display: swap;
+  src: url('../assets/fonts/jost.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic; font-weight: 300 500; font-display: swap;
+  src: url('../assets/fonts/jost-italic.woff2') format('woff2');
+}
+
 /* ================= AASAA — palette drawn from the logo ================= */
 :root {
   --cream: #efe8db;
@@ -22,6 +39,16 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+
+/* Accessibility: keyboard focus + skip link */
+:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; border-radius: 3px; }
+.skip-link {
+  position: absolute; left: 0; top: -48px; z-index: 100;
+  background: var(--maroon); color: var(--paper);
+  padding: 0.6rem 1.1rem; text-decoration: none; letter-spacing: 0.06em;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
 
 body {
   font-family: var(--font-body);
@@ -211,7 +238,7 @@ a { color: inherit; }
   margin: 0 0 1.4rem; break-inside: avoid; border-radius: var(--radius);
   overflow: hidden; background: var(--paper); border: 1px solid var(--cream-deep);
 }
-.masonry img { width: 100%; display: block; transition: transform 0.5s ease; }
+.masonry img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
 .masonry figure:hover img { transform: scale(1.03); }
 .masonry figcaption {
   padding: 0.75rem 1.1rem 0.9rem; font-size: 0.86rem; letter-spacing: 0.1em;
