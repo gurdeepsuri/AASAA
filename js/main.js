@@ -32,5 +32,37 @@ const observer = new IntersectionObserver(
 
 document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
+// Contact form — submit via Web3Forms with hCaptcha, no page reload
+const enquiryForm = document.getElementById('enquiryForm');
+if (enquiryForm) {
+  const status = document.getElementById('formStatus');
+  enquiryForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.className = 'form-status';
+    status.textContent = 'Sending…';
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(enquiryForm),
+      });
+      const result = await response.json();
+      if (result.success) {
+        status.textContent = "Thank you — your enquiry is on its way. We'll be in touch soon.";
+        status.classList.add('ok');
+        enquiryForm.reset();
+        if (window.hcaptcha) window.hcaptcha.reset();
+      } else {
+        status.textContent = result.message || 'Please complete the “I am human” check and try again.';
+        status.classList.add('err');
+      }
+    } catch (err) {
+      status.textContent = 'Network error — please email us directly at aasaastudio@gmail.com.';
+      status.classList.add('err');
+    }
+  });
+}
+
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
