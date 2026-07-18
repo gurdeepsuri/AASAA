@@ -7,52 +7,51 @@ Website for AASAA, a Bangalore-based architecture and interior design studio.
 - `index.html` — single-page site (hero, about, services, projects, process, contact)
 - `css/style.css` — styles, with a palette drawn from the studio logo
 - `js/main.js` — mobile nav, scroll-reveal animations
-- `assets/logo.svg` — full logo (vector recreation)
-- `assets/mark.svg` — logo mark only (used in the header and as favicon)
+- `assets/logo.svg` / `assets/mark.svg` — logo (vector) and mark-only version / favicon
+- `assets/apple-touch-icon.png` — home-screen icon for iOS
+- `assets/images/saanjh/` — optimised photos of the first project ("Saanjh")
+- `assets/images/og-image.jpg` — social-share preview image
+
+The photographs are resized and compressed for the web (each ~150–350 KB).
+The full-resolution originals are not kept in the repo.
 
 ## Run locally
 
-It's a static site — just open `index.html` in a browser, or serve it:
+Static site — open `index.html`, or serve it:
 
 ```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000
+python3 -m http.server 8000   # then visit http://localhost:8000
 ```
 
-## Host it live (GitHub Pages)
+## Host it live
 
-1. On GitHub, go to the repository **Settings → Pages**.
-2. Under **Build and deployment**, set Source to **Deploy from a branch**.
-3. Choose the branch (e.g. `main`) and folder `/ (root)`, then save.
-4. The site goes live at `https://<username>.github.io/AASAA/` within a minute or two.
+### 1. GitHub Pages (free, quickest)
 
-To use a custom domain (e.g. `aasaa.in`), add it under the same Pages settings
-and point the domain's DNS to GitHub Pages.
+1. Repo **Settings → Pages**.
+2. **Source: Deploy from a branch**, branch `main`, folder `/ (root)`, **Save**.
+3. Live at `https://gurdeepsuri.github.io/AASAA/` in a minute or two.
 
-## Adding the project photos
+### 2. Point your own domain at it
 
-The Projects section is wired to photos of the studio's first project
-("A Family Home"). Drop the photos into `assets/projects/residence-01/`
-with exactly these names and they will appear automatically (until then,
-each card shows a coloured placeholder):
+Once Pages is on, add the custom domain under the same **Settings → Pages**
+screen (the **Custom domain** field), then set these DNS records at your
+registrar:
 
-| Filename | Photo |
-|---|---|
-| `living-room.jpg` | Living room with the curved wooden arch and beige sofa |
-| `display-unit.jpg` | Fluted panelling opening to the mural-lined study nook |
-| `kids-room.jpg` | Kids' room with jungle mural and sage daybed (portrait) |
-| `study-corner.jpg` | Arched bookshelf, window seat and beaded timber cornice |
-| `master-bedroom.jpg` | Master bedroom with plaster wall and block-printed linen |
-| `jungle-mural.jpg` | Wide view of the giraffe mural over arched green panelling |
-| `crockery-unit.jpg` | Bar unit with dark chinoiserie folding doors and terracotta tiles |
-| `media-wall.jpg` | TV wall with fluted-oval console and burnt-orange niche |
-| `dining-niches.jpg` | Dining wall with arched terracotta niches and brass pieces |
-| `powder-room.jpg` | Powder room with carved wooden basin on black stone |
+- For a root domain (e.g. `aasaa.in`), add four **A** records pointing to:
+  `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+- For a `www` subdomain, add a **CNAME** record pointing to
+  `gurdeepsuri.github.io`
 
-Easiest way: on GitHub, open the `assets/projects/residence-01/` folder →
-**Add file → Upload files**, and rename each photo to match before uploading.
+GitHub then provisions HTTPS automatically (tick **Enforce HTTPS**). A `CNAME`
+file with the domain name is committed to the repo root once you save the
+custom domain — keep it.
 
-## To customise
+> Prefer a host with a dashboard? The same folder deploys as-is to **Netlify**
+> or **Vercel** (drag-and-drop or connect the repo); both handle the domain and
+> HTTPS for you.
 
-- Contact details in `index.html` (`hello@aasaa.studio` and the phone number are placeholders).
-- The original raster logo can be dropped into `assets/` and referenced instead of the SVG recreation if preferred.
+## To customise later
+
+- **Add more projects** — drop optimised photos into `assets/images/<project>/`
+  and add a new `<figure>` block in the Projects section of `index.html`.
+- **Contact details** live in the Contact section and footer of `index.html`.
