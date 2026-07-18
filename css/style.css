@@ -241,7 +241,21 @@ a { color: inherit; }
 .project { border-radius: var(--radius); overflow: hidden; background: var(--paper); border: 1px solid var(--cream-deep); transition: transform 0.25s, box-shadow 0.25s; }
 .project:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
 
-.project-media { height: 210px; position: relative; }
+.featured-project { max-width: 46rem; margin-bottom: clamp(1.8rem, 3.5vw, 2.8rem); }
+.featured-title { font-size: 1.3rem; letter-spacing: 0.1em; margin-bottom: 0.7rem; color: var(--maroon); }
+.featured-desc { color: var(--ink-soft); }
+
+.project-media { height: 240px; position: relative; overflow: hidden; }
+.project-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+.project:hover .project-media img { transform: scale(1.04); }
 .project-media::after {
   content: "";
   position: absolute;
