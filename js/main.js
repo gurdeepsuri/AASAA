@@ -32,10 +32,11 @@ const observer = new IntersectionObserver(
 
 document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-// Contact form — submit via Web3Forms with hCaptcha, no page reload
+// Contact form — submit via Web3Forms, no page reload
 const enquiryForm = document.getElementById('enquiryForm');
 if (enquiryForm) {
   const status = document.getElementById('formStatus');
+
   enquiryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     status.className = 'form-status';
@@ -52,7 +53,6 @@ if (enquiryForm) {
         status.textContent = "Thank you — your enquiry is on its way. We'll be in touch soon.";
         status.classList.add('ok');
         enquiryForm.reset();
-        if (window.hcaptcha) window.hcaptcha.reset();
       } else {
         status.textContent = result.message || 'Please complete the “I am human” check and try again.';
         status.classList.add('err');
