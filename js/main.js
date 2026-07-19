@@ -51,21 +51,36 @@ if (enquiryForm) {
   enquiryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     status.className = 'form-status';
+
+    // Require the reCAPTCHA "I'm not a robot" check to be solved
+    const captchaToken = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+    if (!captchaToken) {
+      status.classList.add('err');
+      status.textContent = "Please tick the “I'm not a robot” box before sending.";
+      return;
+    }
+
     status.textContent = 'Sending…';
+
+    // Web3Forms' free tier does not verify captcha tokens, so drop the
+    // reCAPTCHA field before sending (the checkbox is enforced above).
+    const data = new FormData(enquiryForm);
+    data.delete('g-recaptcha-response');
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(enquiryForm),
+        body: data,
       });
       const result = await response.json();
       if (result.success) {
         status.textContent = "Thank you — your enquiry is on its way. We'll be in touch soon.";
         status.classList.add('ok');
         enquiryForm.reset();
+        if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
       } else {
-        status.textContent = result.message || 'Please complete the “I am human” check and try again.';
+        status.textContent = result.message || 'Something went wrong — please try again.';
         status.classList.add('err');
       }
     } catch (err) {
