@@ -9,21 +9,27 @@ import { render as dashboard } from './views/dashboard.js';
 import { render as clients } from './views/clients.js';
 import { render as projects } from './views/projects.js';
 import { render as quotes } from './views/quotes.js';
+import { render as invoices } from './views/invoices.js';
 import { render as appointments } from './views/appointments.js';
 import { render as expenses } from './views/expenses.js';
 import { render as time } from './views/time.js';
+import { render as vendors } from './views/vendors.js';
+import { render as reports } from './views/reports.js';
 import { render as settingsView } from './views/settings.js';
 
 const NAV = [
   { id: 'dashboard', label: 'Home', icon: '🏠' },
   { id: 'projects', label: 'Projects', icon: '📐' },
-  { id: 'quotes', label: 'Quotes', icon: '🧾' },
+  { id: 'invoices', label: 'Invoices', icon: '📄' },
   { id: 'appointments', label: 'Schedule', icon: '📅' },
-  { id: 'clients', label: 'Clients', icon: '👥' },
 ];
 const MORE = [
+  { id: 'quotes', label: 'Quotes', icon: '🧾' },
+  { id: 'clients', label: 'Clients', icon: '👥' },
+  { id: 'vendors', label: 'Vendors', icon: '🧰' },
   { id: 'expenses', label: 'Expenses', icon: '💸' },
   { id: 'time', label: 'Hours', icon: '⏱️' },
+  { id: 'reports', label: 'Reports', icon: '📊' },
   { id: 'settings', label: 'Settings', icon: '⚙️' },
 ];
 
@@ -113,10 +119,13 @@ async function boot() {
   route('dashboard', dashboard);
   route('projects', projects);
   route('quotes', quotes);
+  route('invoices', invoices);
   route('appointments', appointments);
   route('clients', clients);
+  route('vendors', vendors);
   route('expenses', expenses);
   route('time', time);
+  route('reports', reports);
   route('settings', settingsView);
 
   if (needsUnlock()) await showLock();

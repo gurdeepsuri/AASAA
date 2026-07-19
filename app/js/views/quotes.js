@@ -7,6 +7,7 @@ import { openSheet, closeSheet, toast, confirmDialog, emptyState, statusChip, re
 import { field, input, textarea, select, row, formActions } from '../form.js';
 import { escapeHtml, money, fmtDate, byNewest, sum, indexById } from '../util.js';
 import { settings, currency, updateSettings } from '../state.js';
+import { shareText } from '../share.js';
 import { navigate, start } from '../router.js';
 
 export const STATUSES = ['Draft', 'Sent', 'Accepted', 'Rejected', 'Expired'];
@@ -67,6 +68,7 @@ async function renderDetail(outlet, id) {
     <div class="detail-head">
       <button class="link-back" id="back">‹ Quotes</button>
       <div class="detail-actions">
+        <button class="btn btn--ghost btn--sm" id="share">Share</button>
         <button class="btn btn--ghost btn--sm" id="print">Print / PDF</button>
         <button class="btn btn--ghost btn--sm" id="edit">Edit</button>
         <button class="btn btn--danger btn--sm" id="del">Delete</button>
@@ -105,11 +107,21 @@ async function renderDetail(outlet, id) {
       <div class="totals__grand"><span>Total</span><span>${money(t.total, cur)}</span></div>
     </div>
     ${q.notes ? `<div class="note-box">${escapeHtml(q.notes)}</div>` : ''}
+
+    <div class="quick-row">
+      <button class="btn btn--primary btn--sm" id="toInvoice">→ Convert to invoice</button>
+    </div>
   `;
 
   outlet.querySelector('#back').addEventListener('click', () => navigate('quotes'));
   outlet.querySelector('#edit').addEventListener('click', () => editQuote(q));
   outlet.querySelector('#print').addEventListener('click', () => printQuote(q, client, project));
+  outlet.querySelector('#share').addEventListener('click', () => shareQuote(q, client));
+  outlet.querySelector('#toInvoice').addEventListener('click', async () => {
+    if (await confirmDialog('Create an invoice from this quote? You can edit it afterwards.', { danger: false, okLabel: 'Create invoice' })) {
+      (await import('./invoices.js')).invoiceFromQuote(q);
+    }
+  });
   outlet.querySelector('#del').addEventListener('click', async () => {
     if (await confirmDialog(`Delete ${q.number || 'this quote'}?`)) {
       await db.remove('quotes', id); toast('Quote deleted'); navigate('quotes');
@@ -216,6 +228,21 @@ export async function editQuote(preset = {}) {
     toast(isNew ? 'Quote created' : 'Saved');
     start();
   });
+}
+
+// ---- share ----------------------------------------------------------------
+function shareQuote(q, client) {
+  const cur = currency();
+  const t = quoteTotals(q);
+  const st = settings();
+  const text = [
+    `${st.businessName || 'AASAA Studio'} — Quote ${q.number}`,
+    client ? `For: ${client.name}` : '',
+    `Date: ${fmtDate(q.date)}${q.validUntil ? ` · Valid till: ${fmtDate(q.validUntil)}` : ''}`,
+    `Estimate: ${money(t.total, cur)} (incl. GST)`,
+    q.notes ? `\n${q.notes}` : '',
+  ].filter(Boolean).join('\n');
+  shareText({ title: `Quote ${q.number}`, text, contact: client || {} });
 }
 
 // ---- printable view -------------------------------------------------------

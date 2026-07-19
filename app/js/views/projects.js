@@ -8,6 +8,7 @@ import { openSheet, closeSheet, toast, confirmDialog, emptyState, statusChip, re
 import { field, input, textarea, select, row, formActions } from '../form.js';
 import { escapeHtml, money, moneyShort, fmtDate, byNewest, sum, indexById } from '../util.js';
 import { currency } from '../state.js';
+import { invoiceTotals as invTotals, displayStatus as invStatus } from './invoices.js';
 import { navigate, start } from '../router.js';
 
 export const STATUSES = ['Lead', 'Active', 'On Hold', 'Completed', 'Cancelled'];
@@ -56,18 +57,20 @@ async function renderList(outlet) {
 async function renderDetail(outlet, id) {
   const p = await db.get('projects', id);
   if (!p) { outlet.innerHTML = emptyState('🔍', 'Project not found'); return; }
-  const [clients, quotes, expenses, time] = await Promise.all([
-    db.list('clients'), db.list('quotes'), db.list('expenses'), db.list('timeEntries'),
+  const [clients, quotes, invoices, expenses, time] = await Promise.all([
+    db.list('clients'), db.list('quotes'), db.list('invoices'), db.list('expenses'), db.list('timeEntries'),
   ]);
   const client = clients.find((c) => c.id === p.clientId);
   const pQuotes = quotes.filter((q) => q.projectId === id).sort(byNewest);
+  const pInv = invoices.filter((i) => i.projectId === id).sort(byNewest);
   const pExp = expenses.filter((e) => e.projectId === id).sort(byNewest);
   const pTime = time.filter((t) => t.projectId === id).sort(byNewest);
   const cur = currency();
 
-  const quoted = sum(pQuotes.filter((q) => q.status === 'Accepted'), (q) => q.total);
+  const received = sum(pInv, (i) => invTotals(i).paid);
   const spent = sum(pExp, (e) => e.amount);
   const hours = sum(pTime, (t) => t.hours);
+  const profit = received - spent;
   const billable = sum(pTime.filter((t) => t.billable), (t) => (Number(t.hours) || 0) * (Number(t.rate) || 0));
 
   outlet.innerHTML = `
@@ -90,19 +93,29 @@ async function renderDetail(outlet, id) {
     ${p.description ? `<div class="note-box">${escapeHtml(p.description)}</div>` : ''}
 
     <div class="stat-grid">
-      <div class="stat"><span class="stat__label">Budget</span><span class="stat__val">${p.budget ? moneyShort(p.budget, cur) : '—'}</span></div>
-      <div class="stat"><span class="stat__label">Accepted quotes</span><span class="stat__val">${moneyShort(quoted, cur)}</span></div>
+      <div class="stat"><span class="stat__label">Received</span><span class="stat__val">${moneyShort(received, cur)}</span></div>
       <div class="stat"><span class="stat__label">Expenses</span><span class="stat__val">${moneyShort(spent, cur)}</span></div>
+      <div class="stat"><span class="stat__label">Profit</span><span class="stat__val" style="color:${profit >= 0 ? 'var(--ok)' : 'var(--danger)'}">${profit < 0 ? '−' : ''}${moneyShort(Math.abs(profit), cur)}</span></div>
       <div class="stat"><span class="stat__label">Hours</span><span class="stat__val">${hours.toFixed(1)}</span></div>
     </div>
-    ${billable ? `<p class="muted small">Billable time value: <strong>${money(billable, cur)}</strong></p>` : ''}
+    ${p.budget ? `<p class="muted small">Budget: <strong>${money(p.budget, cur)}</strong>${billable ? ` · Billable time value: <strong>${money(billable, cur)}</strong>` : ''}</p>`
+      : (billable ? `<p class="muted small">Billable time value: <strong>${money(billable, cur)}</strong></p>` : '')}
 
     <div class="quick-row">
       <button class="btn btn--soft btn--sm" data-add="quote">+ Quote</button>
+      <button class="btn btn--soft btn--sm" data-add="invoice">+ Invoice</button>
       <button class="btn btn--soft btn--sm" data-add="expense">+ Expense</button>
       <button class="btn btn--soft btn--sm" data-add="time">+ Hours</button>
       <button class="btn btn--soft btn--sm" data-add="appt">+ Meeting</button>
     </div>
+
+    <h2 class="section-title">Invoices (${pInv.length})</h2>
+    ${pInv.length ? `<div class="card-list">${pInv.map((i) => `
+      <button class="item" data-invoice="${i.id}">
+        <span class="item__main"><span class="item__title">${escapeHtml(i.number || 'Invoice')}</span>
+        <span class="item__sub">${escapeHtml(invStatus(i))} · ${fmtDate(i.date)}</span></span>
+        <span class="item__amt">${money(invTotals(i).total, cur)}</span></button>`).join('')}</div>`
+      : `<p class="muted small">No invoices.</p>`}
 
     <h2 class="section-title">Quotes (${pQuotes.length})</h2>
     ${pQuotes.length ? `<div class="card-list">${pQuotes.map((q) => `
@@ -140,6 +153,8 @@ async function renderDetail(outlet, id) {
     navigate('clients/' + e.currentTarget.getAttribute('data-client')));
   outlet.querySelectorAll('[data-quote]').forEach((el) =>
     el.addEventListener('click', () => navigate('quotes/' + el.getAttribute('data-quote'))));
+  outlet.querySelectorAll('[data-invoice]').forEach((el) =>
+    el.addEventListener('click', () => navigate('invoices/' + el.getAttribute('data-invoice'))));
   outlet.querySelectorAll('[data-expense]').forEach((el) =>
     el.addEventListener('click', () => navigate('expenses/' + el.getAttribute('data-expense'))));
   outlet.querySelectorAll('[data-time]').forEach((el) =>
@@ -150,6 +165,7 @@ async function renderDetail(outlet, id) {
     const kind = el.getAttribute('data-add');
     const preset = { projectId: p.id, clientId: p.clientId };
     if (kind === 'quote') (await import('./quotes.js')).editQuote(preset);
+    if (kind === 'invoice') (await import('./invoices.js')).editInvoice(preset);
     if (kind === 'expense') (await import('./expenses.js')).editExpense(preset);
     if (kind === 'time') (await import('./time.js')).editTime(preset);
     if (kind === 'appt') (await import('./appointments.js')).editAppt(preset);

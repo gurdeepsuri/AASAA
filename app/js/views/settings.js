@@ -42,7 +42,11 @@ export async function render(outlet) {
       )}
       ${row(
         field('GST %', input('taxRate', st.taxRate, { type: 'number', min: 0, step: '0.5' })),
+        field('Default reminder (min)', input('defaultReminder', st.defaultReminder, { type: 'number', min: 0, step: '10' })),
+      )}
+      ${row(
         field('Quote prefix', input('quotePrefix', st.quotePrefix, { placeholder: 'AASAA-' })),
+        field('Invoice prefix', input('invoicePrefix', st.invoicePrefix, { placeholder: 'INV-' })),
       )}
       ${formActions('Save defaults')}
     </form>
@@ -61,14 +65,19 @@ export async function render(outlet) {
         <button class="btn btn--soft btn--sm" id="export">⬇ Export backup</button>
         <label class="btn btn--soft btn--sm" for="importFile">⬆ Import backup</label>
         <input type="file" id="importFile" accept="application/json" hidden>
+        <button class="btn btn--soft btn--sm" id="exportIcs">📅 Export meetings (.ics)</button>
       </div>
       <div class="quick-row" style="margin-top:.6rem">
         <button class="btn btn--danger btn--sm" id="wipe">Erase all data</button>
       </div>
     </div>
 
-    <p class="app-version muted small">AASAA Studio Manager · local-first · v1</p>
+    <p class="app-version muted small">AASAA Studio Manager · local-first · v2</p>
   `;
+
+  outlet.querySelector('#exportIcs').addEventListener('click', async () => {
+    (await import('./appointments.js')).exportAllICS();
+  });
 
   outlet.querySelector('#profile').addEventListener('submit', async (e) => {
     e.preventDefault();

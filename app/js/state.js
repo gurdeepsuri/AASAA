@@ -15,6 +15,9 @@ const DEFAULT_SETTINGS = {
   taxRate: 18,         // GST %
   quotePrefix: 'AASAA-',
   quoteSeq: 1,
+  invoicePrefix: 'INV-',
+  invoiceSeq: 1,
+  defaultReminder: 60, // default meeting reminder, minutes before
   passcode: '',        // optional privacy lock (not security-grade)
 };
 

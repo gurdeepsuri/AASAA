@@ -6,11 +6,12 @@ import { db } from '../db.js';
 import { emptyState } from '../ui.js';
 import { escapeHtml, money, moneyShort, fmtTime, relDay, sum, indexById, startOfWeek, startOfMonth } from '../util.js';
 import { settings, currency } from '../state.js';
+import { invoiceTotals, displayStatus } from './invoices.js';
 import { navigate } from '../router.js';
 
 export async function render(outlet) {
-  const [projects, quotes, appts, expenses, time, clients] = await Promise.all([
-    db.list('projects'), db.list('quotes'), db.list('appointments'),
+  const [projects, quotes, invoices, appts, expenses, time, clients] = await Promise.all([
+    db.list('projects'), db.list('quotes'), db.list('invoices'), db.list('appointments'),
     db.list('expenses'), db.list('timeEntries'), db.list('clients'),
   ]);
   const cmap = indexById(clients);
@@ -20,7 +21,9 @@ export async function render(outlet) {
 
   const activeProjects = projects.filter((p) => p.status === 'Active');
   const leads = projects.filter((p) => p.status === 'Lead');
-  const outstanding = sum(quotes.filter((q) => ['Draft', 'Sent'].includes(q.status)), (q) => q.total);
+  const liveInv = invoices.filter((i) => !['Draft', 'Cancelled'].includes(i.status));
+  const outstanding = sum(liveInv, (i) => invoiceTotals(i).balance);
+  const overdue = invoices.filter((i) => displayStatus(i) === 'Overdue');
   const weekHours = sum(time.filter((t) => new Date(t.date) >= startOfWeek()), (t) => t.hours);
   const monthExp = sum(expenses.filter((e) => new Date(e.date) >= startOfMonth()), (e) => e.amount);
 
@@ -42,12 +45,17 @@ export async function render(outlet) {
 
     <div class="stat-grid stat-grid--4">
       <button class="stat stat--tap" data-go="projects"><span class="stat__label">Active projects</span><span class="stat__val">${activeProjects.length}</span><span class="stat__foot">${leads.length} leads</span></button>
-      <button class="stat stat--tap" data-go="quotes"><span class="stat__label">Open quotes</span><span class="stat__val">${moneyShort(outstanding, cur)}</span></button>
+      <button class="stat stat--tap" data-go="invoices"><span class="stat__label">Outstanding</span><span class="stat__val">${moneyShort(outstanding, cur)}</span>${overdue.length ? `<span class="stat__foot" style="color:var(--danger)">${overdue.length} overdue</span>` : ''}</button>
       <button class="stat stat--tap" data-go="time"><span class="stat__label">Hours this week</span><span class="stat__val">${weekHours.toFixed(1)}</span></button>
       <button class="stat stat--tap" data-go="expenses"><span class="stat__label">Spend this month</span><span class="stat__val">${moneyShort(monthExp, cur)}</span></button>
     </div>
 
     ${isEmpty ? emptyState('✨', 'Welcome to your studio manager', 'Start by adding a client or a project — everything else links back to them.') : ''}
+
+    ${overdue.length ? `<div class="alert-banner" data-go="invoices">
+      <span>⚠️ ${overdue.length} overdue invoice${overdue.length > 1 ? 's' : ''} · ${money(sum(overdue, (i) => invoiceTotals(i).balance), cur)} due</span>
+      <span class="item__chev">›</span>
+    </div>` : ''}
 
     <div class="dash-block">
       <div class="dash-block__head"><h2 class="section-title">Up next</h2><button class="link-more" data-go="appointments">All</button></div>
@@ -75,9 +83,11 @@ export async function render(outlet) {
       <button class="quick-tile" data-add="client"><span>👥</span>Client</button>
       <button class="quick-tile" data-add="project"><span>📐</span>Project</button>
       <button class="quick-tile" data-add="quote"><span>🧾</span>Quote</button>
+      <button class="quick-tile" data-add="invoice"><span>📄</span>Invoice</button>
       <button class="quick-tile" data-add="appt"><span>📅</span>Meeting</button>
       <button class="quick-tile" data-add="expense"><span>💸</span>Expense</button>
       <button class="quick-tile" data-add="time"><span>⏱️</span>Hours</button>
+      <button class="quick-tile" data-add="vendor"><span>🧰</span>Vendor</button>
     </div>
   `;
 
@@ -89,8 +99,10 @@ export async function render(outlet) {
     if (kind === 'client') (await import('./clients.js')).editClient();
     if (kind === 'project') (await import('./projects.js')).editProject();
     if (kind === 'quote') (await import('./quotes.js')).editQuote();
+    if (kind === 'invoice') (await import('./invoices.js')).editInvoice();
     if (kind === 'appt') (await import('./appointments.js')).editAppt();
     if (kind === 'expense') (await import('./expenses.js')).editExpense();
     if (kind === 'time') (await import('./time.js')).editTime();
+    if (kind === 'vendor') (await import('./vendors.js')).editVendor();
   }));
 }

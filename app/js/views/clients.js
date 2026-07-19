@@ -7,6 +7,7 @@ import { openSheet, closeSheet, toast, confirmDialog, emptyState, readForm } fro
 import { field, input, textarea, formActions } from '../form.js';
 import { escapeHtml, initials, money, fmtDate, byNewest } from '../util.js';
 import { currency } from '../state.js';
+import { invoiceTotals as invTotals, displayStatus as invStatus } from './invoices.js';
 import { navigate } from '../router.js';
 
 export async function render(outlet, param) {
@@ -43,11 +44,12 @@ function clientCard(c) {
 async function renderDetail(outlet, id) {
   const c = await db.get('clients', id);
   if (!c) { outlet.innerHTML = emptyState('🔍', 'Client not found'); return; }
-  const [projects, quotes, appts] = await Promise.all([
-    db.list('projects'), db.list('quotes'), db.list('appointments'),
+  const [projects, quotes, invoices, appts] = await Promise.all([
+    db.list('projects'), db.list('quotes'), db.list('invoices'), db.list('appointments'),
   ]);
   const mine = projects.filter((p) => p.clientId === id).sort(byNewest);
   const myQuotes = quotes.filter((q) => q.clientId === id).sort(byNewest);
+  const myInv = invoices.filter((i) => i.clientId === id).sort(byNewest);
   const myAppts = appts.filter((a) => a.clientId === id).sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
   const cur = currency();
 
@@ -89,6 +91,14 @@ async function renderDetail(outlet, id) {
         <span class="item__amt">${money(q.total || 0, cur)}</span>
       </button>`).join('')}</div>` : `<p class="muted small">No quotes.</p>`}
 
+    <h2 class="section-title">Invoices (${myInv.length})</h2>
+    ${myInv.length ? `<div class="card-list">${myInv.map((i) => `
+      <button class="item" data-invoice="${i.id}">
+        <span class="item__main"><span class="item__title">${escapeHtml(i.number || 'Invoice')}</span>
+        <span class="item__sub">${escapeHtml(invStatus(i))} · ${fmtDate(i.date)}</span></span>
+        <span class="item__amt">${money(invTotals(i).total || 0, cur)}</span>
+      </button>`).join('')}</div>` : `<p class="muted small">No invoices.</p>`}
+
     <h2 class="section-title">Meetings (${myAppts.length})</h2>
     ${myAppts.length ? `<div class="card-list">${myAppts.map((a) => `
       <button class="item" data-appt="${a.id}">
@@ -111,6 +121,8 @@ async function renderDetail(outlet, id) {
     el.addEventListener('click', () => navigate('projects/' + el.getAttribute('data-project'))));
   outlet.querySelectorAll('[data-quote]').forEach((el) =>
     el.addEventListener('click', () => navigate('quotes/' + el.getAttribute('data-quote'))));
+  outlet.querySelectorAll('[data-invoice]').forEach((el) =>
+    el.addEventListener('click', () => navigate('invoices/' + el.getAttribute('data-invoice'))));
   outlet.querySelectorAll('[data-appt]').forEach((el) =>
     el.addEventListener('click', () => navigate('appointments/' + el.getAttribute('data-appt'))));
 }

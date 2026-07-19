@@ -10,11 +10,12 @@
 import { uid } from './util.js';
 
 const DB_NAME = 'aasaa-studio';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 // The "resources". Add one here + a nav entry and you have a new module.
 export const STORES = [
-  'clients', 'projects', 'quotes', 'appointments', 'expenses', 'timeEntries',
+  'clients', 'projects', 'quotes', 'invoices', 'appointments',
+  'expenses', 'timeEntries', 'vendors',
 ];
 // settings is a single-document store (key/value)
 const KV_STORE = 'settings';

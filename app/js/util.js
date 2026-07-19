@@ -127,6 +127,29 @@ export function indexById(rows) {
   return m;
 }
 
+export function addDays(d, n) {
+  const x = new Date(d); x.setDate(x.getDate() + n); return x;
+}
+export function sameDay(a, b) {
+  const x = new Date(a); const y = new Date(b);
+  return x.getFullYear() === y.getFullYear() && x.getMonth() === y.getMonth() && x.getDate() === y.getDate();
+}
+
+// ---- calendar / sharing ---------------------------------------------------
+// Format a Date as an iCalendar UTC timestamp: 20260719T143000Z
+export function icsStamp(value) {
+  const d = new Date(value);
+  return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+}
+// Keep only digits for a wa.me link; assume India (+91) when no country code.
+export function waNumber(phone) {
+  let digits = String(phone || '').replace(/\D/g, '');
+  if (!digits) return '';
+  if (digits.length === 10) digits = '91' + digits;      // bare Indian mobile
+  if (digits.startsWith('0')) digits = '91' + digits.replace(/^0+/, '');
+  return digits;
+}
+
 // tiny DOM helpers
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
