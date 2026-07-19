@@ -2,6 +2,10 @@
 
 Website for AASAA, a Bangalore-based architecture and interior design studio.
 
+The repo also contains **`app/`** — the AASAA Studio Manager, a private
+phone-first PWA for running the studio (clients, projects, quotes, appointments,
+expenses and hours). See [`app/README.md`](app/README.md).
+
 ## Structure
 
 - `index.html` — single-page site (hero, about, services, projects, process, contact)

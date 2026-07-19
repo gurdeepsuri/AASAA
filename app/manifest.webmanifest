@@ -1,0 +1,15 @@
+{
+  "name": "AASAA Studio Manager",
+  "short_name": "AASAA",
+  "description": "Manage clients, projects, quotes, appointments, expenses and hours.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6ee",
+  "theme_color": "#7c1f17",
+  "icons": [
+    { "src": "../assets/mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "../assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
