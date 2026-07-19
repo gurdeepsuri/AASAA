@@ -357,13 +357,7 @@ a { color: inherit; }
 }
 .contact-form .btn { justify-self: start; border: 0; font-family: var(--font-body); }
 .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-.contact-form .robot-check {
-  display: flex; flex-direction: row; align-items: center; gap: 0.7rem;
-  text-transform: none; letter-spacing: normal; font-size: 0.95rem; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--cream-deep); border-radius: 10px;
-  padding: 0.85rem 1rem; cursor: pointer; width: fit-content;
-}
-.robot-check input { width: 20px; height: 20px; accent-color: var(--maroon); cursor: pointer; margin: 0; }
+.g-recaptcha { margin: 0.2rem 0; }
 .form-status { min-height: 1.3em; font-size: 0.9rem; margin: 0; }
 .form-status.ok { color: var(--blue-deep); }
 .form-status.err { color: var(--maroon); }

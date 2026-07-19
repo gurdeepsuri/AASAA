@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https://www.gstatic.com https://www.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' https://www.google.com https://www.gstatic.com; frame-src https://www.google.com; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>AASAA — Architecture &amp; Interior Design Studio in Bangalore</title>
   <meta name="description" content="AASAA is a Bangalore-based architecture and interior design studio. We design warm, story-rich homes, apartments and workspaces end to end — architecture, interiors, turnkey execution and renovation.">
@@ -324,10 +324,7 @@
           </select>
         </label>
         <label>Message<textarea name="message" rows="4" placeholder="Tell us a little about your project…"></textarea></label>
-        <label class="robot-check">
-          <input type="checkbox" id="notRobot" required>
-          <span>I'm not a robot</span>
-        </label>
+        <div class="g-recaptcha" data-sitekey="6LfT-FotAAAAAEelG8kY0GiUfVtxJ41qL56GbWab"></div>
         <button type="submit" class="btn btn-primary">Send enquiry</button>
         <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       </form>
@@ -348,6 +345,7 @@
     <p class="footer-copy">© <span id="year"></span> AASAA. All rights reserved.</p>
   </footer>
 
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="js/main.js"></script>
 </body>
 </html>
